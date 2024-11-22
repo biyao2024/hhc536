@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        nav ul li {
+            position: relative;
+            cursor: pointer;
+        }
+
+        nav ul li:hover ul {
+            display: block;
+        }
+
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        nav ul li ul li {
+            padding: 10px;
+        }
+
+        nav ul li ul li:hover {
+            background-color: #444;
+        }
+
+       .carousel {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+       .carousel img {
+            width: 100%;
+            height: auto;
+            display: none;
+            position: relative;
+            left: 0;
+            top: 0;
+            transition: all 0.5s ease-in-out;
+        }
+
+       .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+       .carousel-indicators span {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+       .carousel-indicators span.active {
+            background-color: #333;
+        }
+
+       .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 1;
+        }
+
+       .carousel-control.left {
+            left: 10px;
+        }
+
+       .carousel-control.right {
+            right: 10px;
+        }
+		a{text-decoration: none;color: white}
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+			<li>《三国杀移动版》</li>
+            <li>|游戏|
+                <ul><a href="web/game introduction.html" target="_self">
+                    <li>游戏简介</li></a>
+					<a href="web/wanfa.html" target="_self">
+                    <li>玩法介绍</li></a>
+                </ul>
+            </li>
+            <li>|武将|
+                <ul><a href="web/wujiang.html" target="_self">
+                    <li>特色武将</li></a>
+					<a href="web/fengcai.html" target="_self">
+                    <li>角色风采</li></a>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="carousel">
+        <img src="image/1.png" alt="" style="width: 1200;height: 600" data-index="0">
+        <img src="image/2.png" alt="" style="width: 1200;height: 600" data-index="1">
+        <img src="image/3.jpg" alt="" style="width: 1200;height: 600" data-index="2">
+        <img src="image/4.png" alt="" style="width: 1200;height: 600" data-index="3">
+
+        <div class="carousel-indicators">
+            <span class="active" data-index="0"></span>
+            <span data-index="1"></span>
+            <span data-index="2"></span>
+            <span data-index="3"></span>
+        </div>
+
+        <div class="carousel-control left" onclick="prevSlide()">&lt;</div>
+        <div class="carousel-control right" onclick="nextSlide()">&gt;</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const carouselImages = document.querySelectorAll('.carousel img');
+            const carouselIndicators = document.querySelectorAll('.carousel-indicators span');
+            const carouselLeftControl = document.querySelector('.carousel-control.left');
+            const carouselRightControl = document.querySelector('.carousel-control.right');
+
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                carouselImages.forEach((img, i) => {
+                    if (i === index) {
+                        img.style.display = 'block';
+                        img.style.left = '0';
+                    } else {
+                        img.style.display = 'none';
+                    }
+                });
+
+                carouselIndicators.forEach((indicator, i) => {
+                    if (i === index) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % carouselImages.length;
+                showSlide(currentIndex);
+
+                const currentImage = carouselImages[currentIndex];
+                const nextImage = carouselImages[(currentIndex + 1) % carouselImages.length];
+                currentImage.style.left = '0';
+                nextImage.style.left = '100%';
+
+                setTimeout(() => {
+                    nextImage.style.left = '0';
+                    currentImage.style.display = 'none';
+                }, 3000);
+            }
+
+            function prevSlide() {
+                currentIndex = (currentIndex - 1 + carouselImages.length) % carouselImages.length;
+                showSlide(currentIndex);
+
+                const currentImage = carouselImages[currentIndex];
+                const prevImage = carouselImages[(currentIndex - 1 + carouselImages.length) % carouselImages.length];
+                currentImage.style.left = '0';
+                prevImage.style.left = '-100%';
+
+                setTimeout(() => {
+                    prevImage.style.left = '0';
+                    currentImage.style.display = 'none';
+                }, 3000);
+            }
+
+            showSlide(currentIndex);
+
+            carouselIndicators.forEach((indicator) => {
+                indicator.addEventListener('click', function () {
+                    currentIndex = parseInt(this.dataset.index);
+                    showSlide(currentIndex);
+                });
+            });
+
+            carouselLeftControl.addEventListener('click', prevSlide);
+            carouselRightControl.addEventListener('click', nextSlide);
+
+            setInterval(nextSlide, 3000);
+        });
+    </script>
+</body>
+
+</html>
